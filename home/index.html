@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Blogs</title>
+  <link rel="stylesheet" type="text/css" href="./style.css">
+  <script src="https://fb.me/react-15.1.0.js"></script>
+  <script src="https://fb.me/react-dom-15.1.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  <script src="https://fb.me/react-15.1.0.js"></script>
+  <script src="https://fb.me/react-dom-15.1.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  <script src="https://npmcdn.com/react-router@2.4.0/umd/ReactRouter.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+</head>
+
+<body >
+  <div id="container">
+  </div>
+  <script type="text/babel" >
+  var { Router, Route, IndexRoute, IndexLink, Link } = ReactRouter;
+      var destination = document.querySelector("#container");
+
+      var Home = React.createClass({
+        componentDidMount(){
+          $.ajax({
+            url: "http://54.191.251.207:8085/api/blogs",
+            data:{
+              format: 'json'
+            },
+            dataType: 'json',
+            type : 'GET',
+            headers: {"token": localStorage.getItem("tokenData")},
+            success : function(data){
+              console.log(data);
+              printBlog(data);
+            },
+            error: function(error){
+            }
+          });
+          $.ajax({
+            url: "http://54.191.251.207:8085/api/blogs/categories",
+            data:{
+              format: 'json'
+            },
+            dataType: 'json',
+            type : 'GET',
+            headers: {"token": localStorage.getItem("tokenData")},
+            success : function(data){
+              console.log(data);
+              printCategories(data);
+            },
+            error: function(error){
+            }
+          });
+
+          function alertAction(event,address){
+            $.ajax({
+              url: "http://54.191.251.207:8085/api/blogs/?category_id="+ address,
+              data:{
+                format: 'json'
+              },
+              dataType: 'json',
+              type : 'GET',
+              headers: {"token": localStorage.getItem("tokenData")},
+              success : function(data){
+                console.log(data);
+                printBlog(data);
+              },
+              error: function(error){
+              }
+            });
+          }
+          function printBlog(json_obj){
+            $('#blogSpace').empty();
+            var no_blog=json_obj.length;
+            console.log(no_blog);
+            for(var i=0;i<no_blog;i++){
+              $('#blogSpace').append("<h3><a  href=\"#section" + json_obj[i].blog_id + "\" onclick=\"openBlogAction(event," +
+              json_obj[i].blog_id + ")\">" + json_obj[i].blog_title + "</a></h3><p>" + json_obj[i].username + " , " +
+              json_obj[i].published_date + "</p> <hr>");
+            }
+          }
+          function openBlogAction(event,blog_id){
+            $('#blogSpace').empty();
+            $.ajax({
+              url: "http://54.191.251.207:8085/api/blogs/"+blog_id,
+              data:{
+                format: 'json'
+              },
+              dataType: 'json',
+              type : 'GET',
+              headers: {"token": localStorage.getItem("tokenData")},
+              success : function(data){
+                console.log(data);
+                printBlogById(data);
+              },
+              error: function(error){
+
+              }
+            });
+          }
+          function printBlogById(json_obj){
+            $('#blogSpace').append(
+              "<h2>" + json_obj.blog_title + "</h2>" +
+              "<h5><span class='glyp hicon glyphicon-time'></span> Post by " + json_obj.username + " , " + json_obj.published_date + "</h5>"+
+              "<h5><span class=\"label label-success\">" + json_obj.category_name + "</span></h5><hr>" +
+              "<p><img src=\"" + baseUrl + json_obj.image_path + "\" align=\"center\" style=\"width:304px; height:228px;\"></p>" +
+              "<p>" + json_obj.blog_body + "</p><br><br>" );
+          }
+          function printCategories(json_obj){
+            var no_categories=json_obj.length;
+            console.log(no_categories);
+            for(var j=0;j<no_categories;j++){
+              $('#categorySpace').append("<li><a   href=\"#section" + json_obj[j].category_id + "\" onclick=\"alertAction(event," +
+                json_obj[j].category_id + ")\">"+ json_obj[j].category_name +"</a></li>");
+            }
+          }
+        },
+        render: function() {
+          return (
+            <div>
+              <div className="sidenav">
+                <p id="categoryBlock">Categories</p>
+                <div id="categorySpace"></div>
+              </div>
+              <div className="blogDiv">
+              <button id="addBlog" onClick={this.addBlockAction}> tell your story </button>
+              <hr/>
+              <div id="blogSpace"></div>
+              </div>
+            </div>
+          );
+        }
+      });
+      var App = React.createClass({
+        LogoutAction : function(e){
+          $.ajax({
+            type:'POST',
+            url: 'http://54.191.251.207:8085/api/accounts/logout',
+            xhrFields: { withCredentials: true},
+            headers: {"token": localStorage.getItem("tokenData")},
+            cache: false,
+            crossDomain:true,
+            success: function(data) {
+              console.log(data);
+              window.localStorage.removeItem("tokenData");
+              localStorage.clear();
+              window.location.replace("https://www.google.com/");
+            }.bind(this),
+            error: function(xhr, status, err) {
+              console.log(data);
+            }.bind(this),
+          });
+        },
+        render: function() {
+          return (
+            <div>
+              <button id="logoutButton" onClick={this.LogoutAction}> Logout </button>
+              <h1>We make your blogging experience awesome!</h1>
+              <ul className="header">
+                <li><IndexLink to="/" activeClassName="active">Home</IndexLink></li>
+                <li><Link to="/contact" activeClassName="active">Contact</Link></li>
+                <li><Link to="/stuff" activeClassName="active">Know Us</Link></li>
+              </ul>
+              <div className="content">
+                {this.props.children}
+              </div>
+            </div>
+          )
+        }
+      });
+      var Contact = React.createClass({
+        render: function() {
+          return (
+            <div>
+              <h2>GOT QUESTIONS?</h2>
+              <p>Write us at samplesupport@hotmail.com
+              </p>
+            </div>
+          );
+        }
+      });
+      var Stuff = React.createClass({
+        render: function() {
+          return (
+            <div>
+              <h2>TEAM</h2>
+              <ul>
+                <li>Aditya Verma</li>
+                <li>Dewwrat</li>
+                <li>Gaurav Yadav</li>
+              </ul>
+            </div>
+          );
+        }
+      });
+      ReactDOM.render(
+        <Router>
+          <Route path="/" component={App}>
+            <IndexRoute component={Home}/>
+            <Route path="stuff" component={Stuff} />
+            <Route path="contact" component={Contact} />
+          </Route>
+        </Router>,
+        destination
+    );
+  </script>
+</body>
+
+</html>

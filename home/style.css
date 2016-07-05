@@ -1,0 +1,165 @@
+body{
+    background-color: #FFCC00;
+    padding: 20px;
+    margin: 0;
+}
+h1, h2, p, ul, li {
+    font-family: Helvetica, Arial, sans-serif;
+}
+ul.header li {
+    display: inline;
+    list-style-type: none;
+    margin: 0;
+}
+ul.header {
+    background-color: #111;
+    padding: 0;
+}
+ul.header li a {
+    color: #FFF;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 20px;
+    display: inline-block;
+}
+.content {
+    background-color: #FFF;
+    padding: 20px;
+}
+.content h2 {
+    padding: 0;
+    margin: 0;
+}
+.content li {
+    margin-bottom: 10px;
+}
+.active {
+  background-color: #0099FF;
+}
+a{
+  color: #FFFFFF;
+  text-decoration: none;
+}
+#login_username{
+  border-color: #FFCC00;
+  border-width: 4px;
+  border-radius: 4px;
+  width: 200px;
+  height: 30px;
+  margin-left: 20px;
+}
+
+#login_password{
+  border-color: #FFCC00;
+  border-width: 4px;
+  border-radius: 4px;
+  width: 200px;
+  height: 30px;
+  margin-left: 20px;
+}
+#loginButton{
+  border-color: #FFCC00;
+  border-width: 4px;
+  background-color: #FFCC00;
+  margin-left: 150px;
+  border-radius: 4px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  color: white;
+  width: 150px;
+  height: 50px;
+}
+#register_username{
+  border-color: #FFCC00;
+  border-width: 4px;
+  border-radius: 4px;
+  width: 200px;
+  height: 30px;
+  margin-left: 20px;
+}
+
+#register_password{
+  border-color: #FFCC00;
+  border-width: 4px;
+  border-radius: 4px;
+  width: 200px;
+  height: 30px;
+  margin-left: 20px;
+}
+#register_email{
+  border-color: #FFCC00;
+  border-width: 4px;
+  border-radius: 4px;
+  width: 200px;
+  height: 30px;
+  margin-left: 45px;
+}
+#registerButton{
+  border-color: #FFCC00;
+  border-width: 4px;
+  background-color: #FFCC00;
+  margin-left: 150px;
+  border-radius: 4px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  color: white;
+  width: 150px;
+  height: 50px;
+}
+.sidenav {
+      padding-top: 20px;
+      background-color: black;
+      height: 100%;
+      width: 20%;
+      color: white;
+      float: left;
+}
+.blogDiv {
+      padding-top: 20px;
+      background-color: black;
+      height: 100%;
+      width: 78%;
+      color: white;
+      float: left;
+      margin-left: 2%;
+}
+#addBlog{
+  border-color: #FFCC00;
+  border-width: 4px;
+  background-color: #FFCC00;
+  margin-left: 770px;
+  border-radius: 4px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  color: white;
+  width: 150px;
+  height: 50px;
+  margin-bottom: 8px;
+}
+#logoutButton{
+  border-color: #FFCC00;
+  border-width: 4px;
+  background-color: #000000;
+  margin-left: 1050px;
+  border-radius: 4px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  color: white;
+  width: 150px;
+  height: 50px;
+}
+#categoryBlock{
+  margin-left: 20px;
+}
+#categorySpace{
+  margin-left: 25px;
+  color: #FFFFFF;
+}
+#blogSpace{
+  margin-left: 25px;
+
+}

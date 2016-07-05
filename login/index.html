@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Blog Application</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://fb.me/react-15.1.0.js"></script>
+  <script src="https://fb.me/react-dom-15.1.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  <script src="https://fb.me/react-15.1.0.js"></script>
+  <script src="https://fb.me/react-dom-15.1.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+  <script src="https://npmcdn.com/react-router@2.4.0/umd/ReactRouter.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+
+<body >
+  <div id="container">
+  </div>
+  <script type="text/babel" >
+  var { Router, Route, IndexRoute, IndexLink, Link } = ReactRouter;
+      var destination = document.querySelector("#container");
+      var Home = React.createClass({
+        render: function() {
+          return (
+            <div>
+              <h2>HELLO</h2>
+              <p>Blogging has come a long way since its first appearance
+              in the late 1990. Blogging was initially used as a unique
+              platform to share a persons thoughts, feelings, opinions
+              or experiences an online journal or diary with a minimal
+              following . Today it has grown into a platform used by millions,
+               everyone from individuals to businesses. The simplicity of
+               a blog makes it easy for anyone to launch a blog and become
+               a self-proclaimed expert . But how is it important in the
+               business world?</p>
+            </div>
+          );
+        }
+      });
+      var App = React.createClass({
+        render: function() {
+          return (
+            <div>
+              <h1>We make your blogging experience awesome!</h1>
+              <ul className="header">
+                <li><IndexLink to="/" activeClassName="active">Home</IndexLink></li>
+                <li><Link to="/login" activeClassName="active">Login</Link></li>
+                <li><Link to="/register" activeClassName="active">Register</Link></li>
+                <li><Link to="/contact" activeClassName="active">Contact</Link></li>
+                <li><Link to="/stuff" activeClassName="active">Know Us</Link></li>
+              </ul>
+              <div className="content">
+                {this.props.children}
+              </div>
+            </div>
+          )
+        }
+      });
+      var Contact = React.createClass({
+        render: function() {
+          return (
+            <div>
+              <h2>GOT QUESTIONS?</h2>
+              <p>Write us at samplesupport@hotmail.com
+              </p>
+            </div>
+          );
+        }
+      });
+      var Stuff = React.createClass({
+        render: function() {
+          return (
+            <div>
+              <h2>TEAM</h2>
+              <p></p>
+              <ol>
+                <li>Aditya Verma</li>
+                <li>Dewwrat</li>
+                <li>Gaurav Yadav</li>
+              </ol>
+            </div>
+          );
+        }
+      });
+
+      var Login = React.createClass({
+        LoginAction : function(e){
+          var username = document.getElementById("login_username").value;
+          var password = document.getElementById("login_password").value;
+          $.ajax({
+            type:'POST',
+            contentType: "application/json; charset=utf-8",
+            url: 'http://54.191.251.207:8085/api/accounts/login',
+            data : JSON.stringify({"username":username,"password":password}),
+            cache: false,
+            success: function(data) {
+              this.setState({data: data});
+              localStorage.setItem('tokenData',data.token);
+              localStorage.setItem('user_id',data.data[0].user_id);
+              localStorage.setItem('role',data.data[0].role);
+              window.location.href='../home';
+            }.bind(this),
+            error: function(xhr, status, err) {
+              console.error('this.props.url', status, err.toString());
+              alert('Wrong username password!');
+            }.bind(this)
+          });
+        },
+        render: function() {
+          return (
+            <div>
+              <h2>Welcome to world of Blogging</h2>
+                <p><b>LOGIN</b></p>
+                username: <input id="login_username" type="text"></input><br/><br/>
+                password: <input id="login_password" type="password"></input><br/><br/>
+                <button id="loginButton" onClick={this.LoginAction}> submit </button>
+              </div>
+          );
+        }
+      });
+
+      var Register = React.createClass({
+        RegisterAction : function(e){
+          var username = document.getElementById("register_username").value;
+          var email = document.getElementById("register_email").value;
+          var password = document.getElementById("register_password").value;
+          $.ajax({
+            type:'POST',
+            contentType: "application/json; charset=utf-8",
+            url: 'http://54.191.251.207:8085/api/accounts/register',
+            data : JSON.stringify({"username":username,"email":email,"password":password}),
+            cache: false,
+            success: function(data) {
+              this.setState({data: data});
+              alert("done");
+              window.location.href='https://www.google.com/';
+            }.bind(this),
+            error: function(xhr, status, err) {
+              console.error('this.props.url', status, err.toString());
+            }.bind(this)
+          });
+        },
+        render: function() {
+          return (
+            <div>
+              <h2>Join the largest blog community</h2>
+                <p><b>REGISTER</b></p>
+                username: <input id="register_username" type="text"></input><br/><br/>
+                email: <input id="register_email" type="email"></input><br/><br/>
+                password: <input id="register_password" type="password"></input><br/><br/>
+                <button id="registerButton" onClick={this.RegisterAction}> submit </button>
+              </div>
+          );
+        }
+      });
+      ReactDOM.render(
+        <Router>
+          <Route path="/" component={App}>
+            <IndexRoute component={Home}/>
+            <Route path="stuff" component={Stuff} />
+            <Route path="contact" component={Contact} />
+            <Route path="login" component={Login} />
+            <Route path="register" component={Register} />
+          </Route>
+        </Router>,
+        destination
+    );
+  </script>
+</body>
+
+</html>
